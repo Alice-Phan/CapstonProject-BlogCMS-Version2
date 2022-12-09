@@ -7,18 +7,41 @@ package com.we.blogcms.model;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
  * @author ciruf
  */
 public class Author {
+    private boolean enabled;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     private int authorId;
     private Status status;
     private String firstName;
     private String lastName;
     private Role role;
+    private Role1 role1;
     private List<Post> posts;
+
+    private Set<Role1> roles;
+
+    public Set<Role1> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role1> roles) {
+        this.roles = roles;
+    }
+
     private String displayName;
     private String email;
     private String password;
@@ -179,5 +202,19 @@ public class Author {
     public String toString() {
         return "Author{" + "authorId=" + authorId + ", status=" + status + ", firstName=" + firstName + ", lastName=" + lastName + ", role=" + role + ", posts=" + posts + ", displayName=" + displayName + ", email=" + email + ", password=" + password + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
     }
-    
+
+    public Role1 getRole1() {
+        return role1;
+    }
+
+    public void setRole1(Role1 role1) {
+        this.role1 = role1;
+    }
 }
+
+
+
+
+
+
+

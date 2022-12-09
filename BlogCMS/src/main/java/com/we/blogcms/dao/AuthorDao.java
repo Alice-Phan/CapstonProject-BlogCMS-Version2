@@ -76,6 +76,8 @@ public interface AuthorDao {
      * database, null if no author was updated
      */
     public void updateAuthor(Author author);
+
+    Author readByUsername(String username);
 //    /**
 //     * Sets the posts for an author 
 //     *

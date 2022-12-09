@@ -3,6 +3,7 @@
 import com.we.blogcms.TestApplicationConfiguration;
 import com.we.blogcms.dao.BodyDao;
 import com.we.blogcms.model.Body;
+import org.junit.Test;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

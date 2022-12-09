@@ -5,25 +5,24 @@
 package com.we.blogcms.controller;
 
 import ch.qos.logback.classic.pattern.ClassOfCallerConverter;
-import com.we.blogcms.dao.AuthorDao;
-import com.we.blogcms.dao.BodyDao;
-import com.we.blogcms.dao.PostDao;
-import com.we.blogcms.dao.TagDao;
+import com.we.blogcms.dao.*;
 import com.we.blogcms.model.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.quartz.QuartzTransactionManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
+
 
 /**
  *
@@ -52,6 +51,12 @@ public class AdminController {
     @Autowired
     BodyDao bodyDao;
 
+    @Autowired
+    Role1Dao role1Dao;
+
+
+    @Autowired
+    PasswordEncoder encoder;
     @GetMapping
     public String getManagerBlogsPage(Model model) {
         List<Post> allPosts = postDao.getAllPostsForStatusesForAdmin(Status.active,
@@ -76,27 +81,40 @@ public class AdminController {
     }
     
     @PostMapping("/signup")
-    public String createAccount(HttpServletRequest request) {
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        String email = request.getParameter("email");
-        String pwd = request.getParameter("password");
+    public String createAccount(HttpServletRequest request, String email, String password) {
+//        String firstName = request.getParameter("firstName");
+//        String lastName = request.getParameter("lastName");
+//        String email = request.getParameter("email");
+//        String pwd = request.getParameter("password");
+//        Author author = new Author();
+//        author.setStatus(Status.active);
+//        author.setRole(Role.marketing);
+//        author.setFirstName(firstName);
+//        author.setLastName(lastName);
+//        author.setEmail(email);
+//        author.setPassword(pwd);
+//        author.setCreatedAt(LocalDateTime.now());
+//        author.setUpdatedAt(LocalDateTime.now());
+//
+//        Validator validate = (Validator) Validation.buildDefaultValidatorFactory().getValidator();
+//
+//        violations = validate.validate(Author);
+//
+//        if (violations.isEmpty()) {
+//            authorDao.addAuthor(author);
+//        }
+
         Author author = new Author();
-        author.setStatus(Status.active);
-        author.setRole(Role.marketing);
-        author.setFirstName(firstName);
-        author.setLastName(lastName);
-        author.setEmail(email);
-        author.setPassword(pwd);
-        author.setCreatedAt(LocalDateTime.now());
-        author.setUpdatedAt(LocalDateTime.now());
+        author.setEmail(author.getEmail());
+        author.setPassword(encoder.encode(password));
+        author.setEnabled(true);
 
-        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
-        violations = validate.validate(author);
+        Set<Role1> userRoles = new HashSet<>();
+        userRoles.add(role1Dao.readByRole("ROLE_SIDEKICK"));
+        author.setRoles(userRoles);
 
-        if (violations.isEmpty()) {
-            authorDao.addAuthor(author);
-        }
+        authorDao.addAuthor(author);
+
         return "redirect:/admin/login";
     }
 

@@ -133,7 +133,12 @@ public class AuthorDaoImpl implements AuthorDao {
                 author.getAuthorId());
     }
 
-private static final class AuthorMapper implements RowMapper<Author> {
+    @Override
+    public Author readByUsername(String email) {
+        return null;
+    }
+
+    private static final class AuthorMapper implements RowMapper<Author> {
 
     @Override
     public Author mapRow(ResultSet rs, int index) throws SQLException {

@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="BlogCMS" target="17" />
+      <module name="BlogCMS" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
